@@ -63,3 +63,7 @@ API を使わずに画面だけ見るときは `JEV_MOCK=1`（答えはでたら
 UMIGAME_DEMO=1 .venv/bin/python -m umigame.web --port 8790
 .venv/bin/python -m tools.record_demo --out docs/img   # demo.gif と静止画
 ```
+
+## ライセンス
+
+[MIT](LICENSE) © tatsuya-tech77。オリジナルの★2〜★4の問題は、このリポジトリに含まれていません。

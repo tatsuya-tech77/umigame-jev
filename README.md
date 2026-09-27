@@ -80,3 +80,7 @@ A game costs roughly ¥0.1–0.2 in Jev usage (about 17k–25k input tokens; out
 ## Credits
 
 Game design and code by [@weed_tatsuya](https://x.com/weed_tatsuya). Puzzles, hints and answer choices were drafted together with Claude and reviewed by the author. Illustrations were generated with ChatGPT and converted to 4-tone pixel art. Game master: [Jev](https://typesafe.ai/) by TypeSafe AI.
+
+## License
+
+[MIT](LICENSE) © tatsuya-tech77. The original ★2–★4 puzzles are not included in this repository.

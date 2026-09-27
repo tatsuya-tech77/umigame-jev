@@ -218,6 +218,7 @@ form button:disabled{opacity:.5;cursor:default}
     <div class="done-sub" id="done-sub"></div>
     <button type="button" class="xshare" id="d-share">𝕏 でシェア</button>
     <div class="done-btns">
+      <button type="button" id="d-truth">真相を見る</button>
       <button type="button" id="d-result">結果を見る</button>
       <button type="button" id="d-restart">最初から</button>
       <button type="button" class="accent" id="d-next">次の問題へ</button>
@@ -341,7 +342,7 @@ const wrongs = g => g.turns.filter(t => t.kind === "g" && t.level && t.level !==
 const scoreOf = g => counted(g) + 2 * wrongs(g);
 // 回数の上限（サーバーの /api/puzzles から AI 対戦と同じ値で上書きする）
 let MAX_QUESTIONS = 20, MAX_UNCOUNTED = 10, MAX_GUESSES = 3;
-const isOver = g => g.solved || !!g.truth || wrongs(g) >= MAX_GUESSES;
+const isOver = g => g.solved || !!g.truth || !!g.gaveUp || wrongs(g) >= MAX_GUESSES;
 
 const PATH = {yes:"🟩", no:"⬛", irrelevant:"⬜", partly:"🟨"};
 const SHARE_TAG = "#ウミガメ人間vsAI";
@@ -470,6 +471,7 @@ function showResult(pid){
     ql.append(d);
   });
   card.querySelector(".truthbox span").textContent = g.truth || "";
+  card.querySelector(".truthbox").hidden = !g.truth;
   card.querySelector(".close").onclick = hideResult;
   card.querySelector('[data-act="x"]').onclick = () => shareX(pid);
   card.querySelector('[data-act="copy"]').onclick = async e => {
@@ -581,9 +583,13 @@ function renderDock(g){
   $("donebar").hidden = !over;
   if(over){
     const score = scoreOf(g);
-    $("done-msg").textContent = g.solved ? `🎉 解決！ ${score}手` : "このゲームは終わりました（真相は上に出ています）";
+    $("done-msg").textContent = g.solved ? `🎉 解決！ ${score}手`
+      : g.truth ? "このゲームは終わりました（真相は上に出ています）"
+      : g.gaveUp ? "ギブアップしました" : `解答を${MAX_GUESSES}回使いました`;
     $("done-sub").textContent = g.solved ? (compareAI(score) || "") + (g.retry ? "　※解き直し（参考記録）" : "")
-      : "「最初から」でもう一度挑戦できます（記録は参考記録になります）";
+      : g.truth ? "「最初から」でもう一度挑戦できます（記録は参考記録になります）"
+      : "真相を見ずに「最初から」挑戦し直すこともできます";
+    $("d-truth").hidden = g.solved || !!g.truth;
     $("d-next").hidden = !nextPuzzle(cur.id);
   }
   requestAnimationFrame(fitDock);
@@ -779,7 +785,7 @@ async function afterGuess(pid){
   const g = game(pid);
   if(g.solved){ showResult(pid); return; }
   if(wrongs(g) >= MAX_GUESSES && !g.truth){
-    try{ const r = await post("/api/reveal", {pid}); g.truth = r.truth; store(); if(cur.id === pid) renderLog(); }catch{}
+    if(cur.id === pid){ renderStats(); }
     showResult(pid);
   }
 }
@@ -817,7 +823,7 @@ $("f").onsubmit = async ev => {
   const pid = cur.id, g = game(pid);
   if(isOver(g)){
     alert(g.solved ? "もう解けています。「最初から」で解き直せます" : g.truth ? "このゲームは終わっています。「最初から」で解き直せます"
-      : `解答は${MAX_GUESSES}回までです。ギブアップで真相を見られます`);
+      : "このゲームは終わっています。「真相を見る」か「最初から」を選んでください");
     return;
   }
   if(mode === "ask" && counted(g) >= MAX_QUESTIONS){
@@ -882,18 +888,24 @@ let giveupArmed = null;
 $("giveup").onclick = async () => {
   const btn = $("giveup");
   if(!giveupArmed){
-    btn.textContent = "もう一度押すと真相を表示";
+    btn.textContent = "もう一度押すとギブアップ";
     giveupArmed = setTimeout(() => { giveupArmed = null; btn.textContent = "ギブアップ"; }, 4000);
     return;
   }
   clearTimeout(giveupArmed); giveupArmed = null; btn.textContent = "ギブアップ";
   const g = game(cur.id);
-  try{
-    const r = await post("/api/reveal", {pid:cur.id});
-    g.truth = r.truth; store(); renderLog(); scrollDown();
-    showResult(cur.id);
-  }catch(e){ alert(e.message); }
+  g.gaveUp = true; store();
+  renderLog(); renderStats(); renderTabs(); scrollDown();
 };
+// 真相はボタンを押したときだけ見せる（ギブアップ・解答を使い切ったあと）
+async function revealTruth(pid){
+  const g = game(pid);
+  try{
+    const r = await post("/api/reveal", {pid});
+    g.truth = r.truth; store();
+    if(cur.id === pid){ renderLog(); renderStats(); renderTabs(); scrollDown(); }
+  }catch(e){ alert(e.message); }
+}
 // この問題の記録だけを消して最初から。答えを知ったあとの解き直しは参考記録にする
 // 2回押しで確定するボタン（confirm は埋め込みのブラウザで出ないことがあるため）
 function twoTap(btn, armedText, action){
@@ -913,6 +925,7 @@ function twoTap(btn, armedText, action){
 twoTap($("restart"), "もう一度押すと記録を消す", restartPuzzle);
 twoTap($("d-restart"), "もう一度押すと記録を消す", restartPuzzle);
 $("d-result").onclick = () => showResult(cur.id);
+twoTap($("d-truth"), "もう一度押すと真相を表示", () => revealTruth(cur.id));
 $("d-share").onclick = () => shareX(cur.id);
 $("d-next").onclick = () => { const n = nextPuzzle(cur.id); if(n) openPuzzle(n.id); };
 function restartPuzzle(){

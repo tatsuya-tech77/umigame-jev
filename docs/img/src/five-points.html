@@ -31,6 +31,7 @@
     color: var(--sub); font-size: 17px; font-weight: 600; line-height: 1.4;
   }
   .stat strong { display: block; font-size: 24px; font-weight: 800; color: var(--accent); line-height: 1.3; margin-bottom: 4px; }
+  .stat strong.fit { font-size: 21px; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -48,8 +49,8 @@
 
   <div class="row">
     <div class="no">3</div>
-    <div class="what">指示の混入は<br>別の判定で検知</div>
-    <div class="stat"><strong>プロンプト<br>インジェクション</strong>指示ひとつで<br>「いいえ」→「はい」</div>
+    <div class="what">指示が混ざっているかを<br>別に聞く</div>
+    <div class="stat"><strong class="fit">プロンプト<br>インジェクション対策</strong>指示ひとつで<br>「いいえ」→「はい」になる</div>
   </div>
 
   <div class="row">

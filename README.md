@@ -37,7 +37,7 @@ For each player question, one request asks five things at once (adding questions
 
 AIs play through a one-move-per-command CLI ([`umigame/play_cli.py`](umigame/play_cli.py)), exactly the same rules as humans. Claude models run as Claude Code subagents; GPT models run through the Codex CLI ([`tools/codex_play.py`](tools/codex_play.py)) in an empty directory where the only allowed command is `./play` — any other command (e.g. reading the puzzle file) disqualifies the run.
 
-Median moves over 3 runs (moves = questions + 2 × wrong guesses, max 20 questions; "–" = not solved):
+Median moves over 3 runs (moves = questions + 2 × wrong guesses, max 20 questions; "–" = not solved). The five original puzzles are unpublished, so AIs cannot have seen them; the classic riddle is shown separately because many models already know it:
 
 | Puzzle | ★ | Opus 5.5 | Sonnet 5 | Haiku 4.5 | GPT-6 Astra | GPT-6 Sol | GPT-6 Luna |
 |---|---|---|---|---|---|---|---|
@@ -47,6 +47,7 @@ Median moves over 3 runs (moves = questions + 2 × wrong guesses, max 20 questio
 | The Passenger Who Never Boards | 3 | 6 | 6 | – | 3 | 9 | 12 |
 | The Price Tag Gift | 4 | 9 | 18 | – | 9 | 18 | 12 |
 | Solved | | 15/15 | 15/15 | 6/15 | 15/15 | 14/15 | 12/15 |
+| *Sea Turtle Soup (the classic, likely memorized)* | 4 | 2 | 6 | 14 | 0 | 6 | 14 |
 
 GPT models use Codex's default reasoning effort (Astra: low, Sol/Luna: medium). Jev also makes mistakes, so treat this as a reference, not a benchmark. Playing AIs turned out to be the fastest way to find holes in the puzzle data: after the first round we fixed four puzzles and re-measured everything.
 

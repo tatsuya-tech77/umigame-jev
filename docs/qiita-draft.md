@@ -39,6 +39,7 @@ Jev は文章を1文字も書きません。「はい／いいえ／関係あり
 ※ 定番の「ウミガメのスープ」の、最初の数問だけです（答えは映りません）
 
 👉 遊べるページ：https://umigame-523507334771.asia-northeast1.run.app
+👉 コード（GitHub）：https://github.com/tatsuya-tech77/umigame-jev
 
 作ってみると、Jev の返事は 0.99 のようなきれいな数字ばかりではありませんでした。0.6 の「はい」を信じて言い切るのか、濁すのか。その if 文ひとつで出題者の性格が変わりますし、AI に遊ばせてみると、自分では気づかなかった Jev の癖もいろいろ出てきました。
 
@@ -118,7 +119,7 @@ flowchart LR
 
 ここからは、次の2問で実際に Jev に聞いた結果を見せていきます。答えにつながる質問もそのまま出てくるので、自分で解きたい人は先に遊んでみてください（「遊んでみてください」の節からは、またネタバレなしです）。
 
-👉 [先にゲームで遊んでみる](https://umigame-523507334771.asia-northeast1.run.app)
+👉 [先にゲームで遊んでみる](https://umigame-523507334771.asia-northeast1.run.app)／[コードを見る（GitHub）](https://github.com/tatsuya-tech77/umigame-jev)
 
 **簡単な問題：3時の目覚まし**（ゲームの★1。練習用の問題です）
 
@@ -583,6 +584,7 @@ GPT の推論の強さは Codex の初期設定のまま（Astra は low、Sol �
 記事で紹介した仕組みは、そのままゲームで試せます。問題は★1〜★4の6問（定番の「ウミガメのスープ」も入っています）で、どれも AI の手数と比べられます。確率のバーや「質問ごとの判定」の画面で、Jev が何をどう判定したかも見られます。
 
 👉 遊べるページ：https://umigame-523507334771.asia-northeast1.run.app
+👉 コード（GitHub）：https://github.com/tatsuya-tech77/umigame-jev
 
 メール登録なしで、ブラウザを開くだけで遊べます。Jev の費用は1ゲーム0.1円ほどですが、全員の合計に1日の上限（100円）を決めていて、上限に達すると「本日の営業は終了しました」と出て、日本時間の0時に再開します。連打を防ぐため、IP ごとに1分あたりの回数も制限しています。
 
@@ -597,7 +599,7 @@ GPT の推論の強さは Codex の初期設定のまま（Astra は low、Sol �
 AI に勝てたら、ぜひ #ウミガメ人間vsAI でシェアしてください。おかしな答えを見つけたら、それも [X（@weed_tatsuya）](https://x.com/weed_tatsuya) で教えてもらえるとうれしいです。
 
 👉 遊べるページ：https://umigame-523507334771.asia-northeast1.run.app
-👉 コード：https://github.com/tatsuya-tech77/umigame-jev
+👉 コード（GitHub）：https://github.com/tatsuya-tech77/umigame-jev
 
 ## 参考
 

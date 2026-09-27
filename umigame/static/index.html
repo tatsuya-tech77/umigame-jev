@@ -200,7 +200,7 @@ form button:disabled{opacity:.5;cursor:default}
   <footer class="foot">
     <div class="links">
       <a href="https://github.com/tatsuya-tech77/umigame-jev" target="_blank" rel="noopener">コード（GitHub）</a>
-      <a href="https://x.com/weed_tatsuya" target="_blank" rel="noopener">作者の X（@weed_tatsuya）</a>
+      <a href="https://x.com/tatsuya_tech77" target="_blank" rel="noopener">作者の X（@tatsuya_tech77）</a>
       <a href="https://typesafe.ai/" target="_blank" rel="noopener">出題者 Jev（TypeSafe AI）</a>
     </div>
     <div>問題・ヒントは Claude と下書きして作者が確認したもの。挿絵は ChatGPT で作成。</div>
@@ -418,8 +418,8 @@ function shareText(pid, g){
 }
 
 function shareX(pid){
-  // via を付けると、作者（@weed_tatsuya）にも届く
-  window.open("https://x.com/intent/post?via=weed_tatsuya&text=" + encodeURIComponent(shareText(pid, game(pid))), "_blank", "noopener");
+  // via を付けると、作者（@tatsuya_tech77）にも届く
+  window.open("https://x.com/intent/post?via=tatsuya_tech77&text=" + encodeURIComponent(shareText(pid, game(pid))), "_blank", "noopener");
 }
 
 function showResult(pid){

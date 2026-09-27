@@ -613,7 +613,7 @@ GPT の推論の強さは Codex の初期設定のまま（Astra は low、Sol �
 
 問題・ヒント・解答の候補は Claude と一緒に下書きして、自分で確認・修正しました。挿絵は ChatGPT で作り、白黒4階調のドット絵に変換しています。
 
-AI に勝てたら、ぜひ #ウミガメ人間vsAI でシェアしてください。おかしな答えを見つけたら、それも [X（@weed_tatsuya）](https://x.com/weed_tatsuya) で教えてもらえるとうれしいです。
+AI に勝てたら、ぜひ #ウミガメ人間vsAI でシェアしてください。おかしな答えを見つけたら、それも [X（@tatsuya_tech77）](https://x.com/tatsuya_tech77) で教えてもらえるとうれしいです。
 
 👉 遊べるページ：https://umigame-523507334771.asia-northeast1.run.app
 👉 コード（GitHub）：https://github.com/tatsuya-tech77/umigame-jev

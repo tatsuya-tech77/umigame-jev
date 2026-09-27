@@ -8,7 +8,7 @@
 - 真相への到達度メーター、ヒント、質問の候補、最終解答の判定（正解／惜しい／違う／候補の並べ立て）
 - 問題・真相・ヒント・候補は Claude が下書きし、作者が確認したもの（固定の文章）。プレイ中に AI が文章を生成することはない
 
-遊べるページ: https://umigame-523507334771.asia-northeast1.run.app ／ 解説記事（Qiita）: （URL）
+遊べるページ: https://umigame-523507334771.asia-northeast1.run.app ／ 解説記事（Qiita）: https://qiita.com/tatsuya-tech77/items/9acbd2de9b85ea1f7bf2
 
 ## 問題データについて
 

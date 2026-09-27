@@ -5,7 +5,7 @@
 A browser game of **"Sea Turtle Soup"** (a lateral-thinking yes/no riddle game, *umigame no soup* in Japan) where the game master is **Jev**, TypeSafe AI's decision-only model. Jev never writes a single word: it only returns probabilities for typed questions. Players ask yes/no questions, and try to solve each riddle in fewer moves than frontier AIs (Claude and GPT) did.
 
 - **Play:** https://umigame-523507334771.asia-northeast1.run.app (the puzzles and UI are in Japanese)
-- **Write-up (Japanese, Qiita):** （URL）
+- **Write-up (Japanese, Qiita):** https://qiita.com/tatsuya-tech77/items/9acbd2de9b85ea1f7bf2
 
 ![Demo: Jev answering questions about the classic "Sea Turtle Soup" riddle](docs/img/classic1/demo.gif)
 

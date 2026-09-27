@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ウミガメのスープ × Jev</title>
 <style>
 :root{
@@ -127,7 +127,7 @@ h1 small{font-weight:500;color:var(--sub);font-size:13px;margin-left:6px}
 .verdict .meta{white-space:pre-line}
 .truth{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14px}
 .hint{color:var(--sub);font-size:13px;margin:14px 0 0}
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:linear-gradient(transparent,var(--bg) 22%);padding:22px 0 12px}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:linear-gradient(transparent,var(--bg) 22%);padding:22px 0 calc(16px + env(safe-area-inset-bottom))}
 .dock .in{max-width:760px;margin:0 auto;padding:0 16px}
 .mode{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-bottom:6px}
 .mode > *, .mode .tools > *{white-space:nowrap}
@@ -147,7 +147,10 @@ input[type=text]{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px 14p
 input[type=text]:focus{border-color:var(--accent)}
 form button{font:inherit;font-weight:700;padding:0 18px;border-radius:12px;border:0;background:var(--accent);color:#fff;cursor:pointer}
 form button:disabled{opacity:.5;cursor:default}
-.stats{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--sub);margin-top:6px;font-variant-numeric:tabular-nums}
+.stats{display:flex;gap:4px 12px;flex-wrap:wrap;font-size:11px;color:var(--sub);margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.foot{margin-top:40px;padding:18px 0 8px;border-top:1px solid var(--line);font-size:12px;color:var(--sub);line-height:1.9;text-align:center}
+.foot a{color:var(--sub)}
+.foot .links{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 16px;margin-bottom:6px}
 .stats b{color:var(--ink);font-weight:700}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
 .chips:empty{display:none}
@@ -193,6 +196,16 @@ form button:disabled{opacity:.5;cursor:default}
 
   <p class="hint" id="hint">「はい／いいえ」で答えられる質問をして、真相を突き止めてください。わかったら「解答する」に切り替えます。</p>
   <div class="log" id="log"></div>
+
+  <footer class="foot">
+    <div class="links">
+      <a href="https://github.com/tatsuya-tech77/umigame-jev" target="_blank" rel="noopener">コード（GitHub）</a>
+      <a href="https://x.com/weed_tatsuya" target="_blank" rel="noopener">作者の X（@weed_tatsuya）</a>
+      <a href="https://typesafe.ai/" target="_blank" rel="noopener">出題者 Jev（TypeSafe AI）</a>
+    </div>
+    <div>問題・ヒントは Claude と下書きして作者が確認したもの。挿絵は ChatGPT で作成。</div>
+    <div>個人で運営しています。1日の利用が上限に達すると、その日は終了します。</div>
+  </footer>
 </div>
 
 <div class="modal" id="modal" hidden><div class="modal-card" id="modal-card"></div></div>

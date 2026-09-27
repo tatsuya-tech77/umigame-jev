@@ -42,11 +42,7 @@ h1 small{font-weight:500;color:var(--sub);font-size:13px;margin-left:6px}
 .story{font-size:17px;font-weight:600;margin:0}
 .meter{margin-top:14px}
 .rival{margin-top:8px;font-size:11px;color:var(--sub)}
-.rival summary{cursor:pointer;list-style:none;display:inline-block;padding:2px 0;color:var(--sub)}
-.rival summary::-webkit-details-marker{display:none}
-.rival summary::after{content:" ▸"}
-.rival details[open] summary::after{content:" ▾"}
-.rival summary b{color:var(--ink);font-weight:600}
+.rival-head{font-size:11px;color:var(--sub)}
 .rival b{color:var(--ink)}
 .rival-note{font-size:10px;color:var(--sub);margin-top:2px}
 .rival-scroll{overflow-x:auto;margin-top:6px;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch}
@@ -512,19 +508,12 @@ function renderRival(){
   const ai = cur.ai || [];
   $("rival").innerHTML = "";
   if(!ai.length){ $("rival").textContent = "AIの解答手数は準備中です"; return; }
-  // サブの情報なので、ふだんは1行にたたんでおく（開いたかどうかはこの端末だけで覚える）
-  const box = document.createElement("details");
-  try { box.open = localStorage.getItem("umigame-rival-open") === "1"; } catch(e){}
-  box.addEventListener("toggle", () => { try { localStorage.setItem("umigame-rival-open", box.open ? "1" : "0"); } catch(e){} });
-  const sum = document.createElement("summary");
-  const best = ai.find(a => a.score != null && !a.sample);  // 仮の数字は「最少」に使わない
-  sum.append("AIの解答手数");
-  if(!best) sum.append("（測定中）");
-  if(best){ sum.append("：最少は "); const b = document.createElement("b"); b.textContent = `${best.model} ${best.score}手`; sum.append(b); }
-  box.append(sum);
+  // サブの情報なので、いつも出しておくが小さく（見出し1行＋1行の表）
+  const box = document.createElement("div");
   const head = document.createElement("div");
+  head.className = "rival-head";
   const samples = ai.filter(a => a.sample).length;
-  head.textContent = `少ない順・各${ai[0].runs}回の中央値` + (samples ? `　※「仮」は、まだ測っていない AI の見本の数字です` : "");
+  head.textContent = `AIの解答手数（少ない順・各${ai[0].runs}回の中央値）` + (samples ? `　※「仮」は、まだ測っていない AI の見本の数字です` : "");
   const wrap = document.createElement("div");
   wrap.className = "rival-scroll";
   const t = document.createElement("table");
@@ -555,10 +544,8 @@ function renderRival(){
   box.append(head, wrap);
   $("rival").append(box);
   // 「あなた」の列も、項目名の列のすぐ右に固定する（横にスクロールしても比べられるように）
-  // たたんでいる間は幅が0なので、開いたときにも測り直す
-  const stick = () => { const labW = t.querySelector(".lab").offsetWidth; t.querySelectorAll(".you").forEach(c => { c.style.left = labW + "px"; }); };
-  stick();
-  box.addEventListener("toggle", stick);
+  const labW = t.querySelector(".lab").offsetWidth;
+  t.querySelectorAll(".you").forEach(c => { c.style.left = labW + "px"; });
   const note = document.createElement("div");
   note.className = "rival-note";
   note.textContent = "質問1回＝1手、外れた解答＝2手。小さい数字は各回の手数（×は解けなかった回）";

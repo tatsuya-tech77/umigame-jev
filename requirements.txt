@@ -1,0 +1,4 @@
+# Python 3.10 以上（typesafe-sdk が >=3.10）
+typesafe-sdk>=0.7,<1.0
+fastapi>=0.115
+uvicorn>=0.30

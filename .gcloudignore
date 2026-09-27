@@ -1,0 +1,16 @@
+# gcloud run deploy --source でアップロードしないもの（.dockerignore と同じ考え方）
+# キー・手元の状態・答えが書いてあるファイルは送らない
+.gcloudignore
+.env
+.env.*
+.budget.json
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+docs/
+tests/
+tools/
+fly.toml
+results/*
+!results/arena-claude-code.jsonl

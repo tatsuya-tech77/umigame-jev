@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ウミガメのスープ × Jev</title>
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#fffdf8; --ink:#1d1b16; --sub:#6b6558; --line:#e3ddd0;
+  --accent:#0f766e; --accent-soft:#d6efec;
+  --yes:#16a34a; --no:#dc2626; --irr:#8a8474; --unsure:#b45309;
+  --bubble-q:#ece7dc; --bubble-a:#ffffff; --shadow:0 1px 2px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#12110f; --panel:#1b1a17; --ink:#f0ece2; --sub:#a39d8f; --line:#2f2d28;
+    --accent:#2dd4bf; --accent-soft:#123b37;
+    --yes:#4ade80; --no:#f87171; --irr:#a8a292; --unsure:#fbbf24;
+    --bubble-q:#26241f; --bubble-a:#1f1e1a; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 200px}
+header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
+h1{font-size:20px;margin:0;letter-spacing:.02em}
+h1 small{font-weight:500;color:var(--sub);font-size:13px;margin-left:6px}
+.badge{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--unsure);color:#fff}
+.shop{margin-left:auto;font-size:12px;color:var(--sub);display:flex;align-items:center;gap:6px}
+.shop i{width:8px;height:8px;border-radius:50%;background:var(--yes);display:inline-block}
+.shop.off i{background:var(--irr)}
+.closed{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--sub)}
+.closed b{color:var(--ink);font-size:15px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+.tabs button{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:99px;font:inherit;font-size:13px;cursor:pointer}
+.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs button .done{color:var(--yes);margin-left:4px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.pic{display:block;width:min(56%,300px);height:auto;margin:6px auto 18px;border-radius:6px;image-rendering:pixelated}
+.story{font-size:17px;font-weight:600;margin:0}
+.meter{margin-top:14px}
+.rival{margin-top:8px;font-size:11px;color:var(--sub)}
+.rival summary{cursor:pointer;list-style:none;display:inline-block;padding:2px 0;color:var(--sub)}
+.rival summary::-webkit-details-marker{display:none}
+.rival summary::after{content:" ▸"}
+.rival details[open] summary::after{content:" ▾"}
+.rival summary b{color:var(--ink);font-weight:600}
+.rival b{color:var(--ink)}
+.rival-note{font-size:10px;color:var(--sub);margin-top:2px}
+.rival-scroll{overflow-x:auto;margin-top:6px;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch}
+.ai-grid{border-collapse:separate;border-spacing:0;font-size:10.5px;min-width:100%}
+.ai-grid th,.ai-grid td{padding:2px 7px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--line)}
+.ai-grid tr:last-child td{border-bottom:0}
+.ai-grid th{font-weight:600;color:var(--ink);background:var(--bg)}
+.ai-grid .lab{position:sticky;left:0;z-index:1;background:var(--panel);text-align:left;color:var(--sub);font-weight:400;border-right:1px solid var(--line)}
+.ai-grid th.lab{background:var(--bg)}
+.ai-grid .you{position:sticky;z-index:1;background:var(--accent-soft);color:var(--accent);font-weight:600;border-right:1px solid var(--line)}
+.ai-grid .med{font-size:11px;font-weight:700;color:var(--ink)}
+.ai-grid .runs{display:block;font-size:9px;font-weight:400;color:var(--sub);line-height:1.2}
+.ai-grid .sample{color:var(--sub);font-weight:400}
+.ai-grid .tag{display:inline-block;margin-left:4px;padding:0 5px;border-radius:6px;font-size:10px;background:var(--line);color:var(--sub);font-weight:400}
+.rival-table{width:100%;border-collapse:collapse;margin-top:4px;font-size:13px}
+.rival-table td{padding:3px 0;border-top:1px solid var(--line);white-space:nowrap}
+.rival-table td.n{color:var(--ink);font-weight:700;white-space:normal}
+.rival-table td.s{text-align:right;color:var(--ink);font-weight:700;padding-right:10px}
+.rival-table td.r{text-align:right;font-size:11px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:16px}
+@media (min-width:640px){.modal{align-items:center}}
+.modal-card{background:var(--panel);color:var(--ink);width:100%;max-width:480px;max-height:88vh;overflow:auto;border-radius:18px;padding:20px 18px 16px;box-shadow:0 10px 40px rgba(0,0,0,.25);animation:in .25s ease}
+.modal-card .sub{font-size:13px;color:var(--sub);text-align:center}
+.modal-card .big{font-size:22px;font-weight:800;text-align:center;margin:4px 0 12px}
+.modal-card .big.win{color:var(--yes)} .modal-card .big.lose{color:var(--no)}
+.airow{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:6px 2px;border-bottom:1px solid var(--line);font-size:14px}
+.airow .apath{display:block;font-size:12px;letter-spacing:1px;margin-top:2px;word-break:break-all}
+.airow .ameta{font-size:11px;color:var(--sub)}
+.airow .win{color:var(--yes);font-weight:700} .airow .lose{color:var(--no);font-weight:700} .airow .draw{color:var(--unsure);font-weight:700}
+.modal-card .truthbox{background:var(--bg);border-radius:12px;padding:10px 12px;margin:12px 0;font-size:14px;line-height:1.7}
+.modal-card .odai{font-size:14px;font-weight:600;line-height:1.6;background:var(--bg);border-radius:12px;padding:10px 12px;margin:4px 28px 10px 0}
+.jevbox{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:10px}
+.jevhead{font-size:12px;font-weight:700;color:var(--accent)}
+.jevsum{font-size:13px;font-variant-numeric:tabular-nums;margin:2px 0 6px}
+.qrow{padding:5px 0;border-top:1px dashed var(--line);font-size:13px}
+.qrow .qa{font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums}
+.modal-card details.truthbox summary{cursor:pointer;font-weight:700}
+.modal-card .path{font-size:18px;letter-spacing:2px;text-align:center;margin:6px 0 2px;word-break:break-all}
+.modal-card .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.modal-card .btns button{font:inherit;font-weight:700;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.modal-card .btns .primary{grid-column:1 / -1;background:#000;color:#fff;border-color:#000;font-size:18px;padding:16px}
+.jevbox summary{cursor:pointer;font-size:12px;color:var(--sub);margin-top:4px}
+.modal-card .btns .accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-card .close{float:right;border:0;background:none;font-size:20px;color:var(--sub);cursor:pointer;line-height:1}
+.choices{align-self:stretch;border:1px solid var(--accent);border-radius:12px;padding:12px 14px;background:var(--panel);display:flex;flex-direction:column;gap:8px;animation:in .25s ease}
+.choices h3{margin:0;font-size:15px}
+.choices .meta{font-size:12px;color:var(--sub)}
+.choices button{text-align:left;font:inherit;font-size:14px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.choices button:hover{border-color:var(--accent)}
+.choices button:disabled{opacity:.45;text-decoration:line-through;cursor:default}
+.verdict .vs{margin-top:6px;font-size:14px;font-weight:700}
+.meter-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--sub)}
+.meter-num{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px}
+.steps i{height:8px;border-radius:99px;background:var(--line);transition:background .4s}
+.steps i.on{background:var(--accent)}
+.steps.done i.on{background:#22c55e}
+.meter-note{margin-top:6px;font-size:12px;color:var(--sub)}
+.checklist{margin-top:14px;font-size:13px}
+.checklist .ck-head{font-size:12px;color:var(--sub)}
+.checklist ul{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+.checklist li{color:var(--sub)}
+.checklist li.hit{color:var(--ink);font-weight:700}
+.log{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.qa{display:flex;flex-direction:column;gap:4px;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(4px)}}
+.q{align-self:flex-end;background:var(--bubble-q);padding:8px 12px;border-radius:14px 14px 4px 14px;max-width:85%}
+.a{align-self:flex-start;background:var(--bubble-a);border:1px solid var(--line);padding:8px 12px;border-radius:14px 14px 14px 4px;min-width:220px;max-width:85%}
+.a .t{font-weight:800;font-size:18px}
+.a.yes .t{color:var(--yes)} .a.partly .t{color:var(--unsure)} .a.no .t{color:var(--no)} .a.irrelevant .t{color:var(--irr)} .a.unsure .t{color:var(--unsure)}
+.a.pending .t,.a.notq .t{color:var(--sub);font-weight:600;font-size:14px}
+.a.error .t{color:var(--no);font-weight:600;font-size:14px}
+.verdict.scattershot,.verdict.error{border-color:var(--no)}
+.probs{display:flex;height:6px;border-radius:99px;overflow:hidden;margin-top:6px;background:var(--line)}
+.probs span{height:100%;transition:width .4s}
+.probs .py{background:var(--yes)} .probs .pn{background:var(--no)} .probs .pi{background:var(--irr)}
+.meta{display:flex;gap:10px;font-size:11px;color:var(--sub);margin-top:4px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.verdict{align-self:stretch;border-radius:12px;padding:12px 14px;border:1px solid var(--line);background:var(--panel)}
+.verdict.correct{border-color:var(--yes);background:color-mix(in srgb,var(--yes) 10%,var(--panel))}
+.verdict.close{border-color:var(--unsure)}
+.verdict h3{margin:0 0 4px;font-size:16px}
+.verdict .meta{white-space:pre-line}
+.truth{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14px}
+.hint{color:var(--sub);font-size:13px;margin:14px 0 0}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:linear-gradient(transparent,var(--bg) 22%);padding:22px 0 12px}
+.dock .in{max-width:760px;margin:0 auto;padding:0 16px}
+.mode{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-bottom:6px}
+.mode > *, .mode .tools > *{white-space:nowrap}
+.mode .tools{display:flex;align-items:center;gap:10px;margin-left:auto}
+.mode .tools .sugtoggle,.mode .tools .hintbtn{margin-right:0}
+.mode button{border:0;background:none;color:var(--sub);font:inherit;font-size:13px;padding:2px 8px;border-radius:6px;cursor:pointer}
+.mode button.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.donebar{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.donebar .done-msg{font-size:14px;font-weight:700;color:var(--ink)}
+.donebar .done-sub{font-size:12px;color:var(--sub);margin-top:2px}
+.donebar .done-btns{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.donebar button{flex:1;min-width:88px;font:inherit;font-size:14px;font-weight:700;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.donebar button.accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.donebar button.xshare{display:block;width:100%;margin-top:8px;background:#000;color:#fff;border-color:#000;font-size:16px;padding:12px}
+form{display:flex;gap:8px}
+input[type=text]{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);outline:none}
+input[type=text]:focus{border-color:var(--accent)}
+form button{font:inherit;font-weight:700;padding:0 18px;border-radius:12px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+form button:disabled{opacity:.5;cursor:default}
+.stats{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--sub);margin-top:6px;font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink);font-weight:700}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+.chips:empty{display:none}
+.chips.answers{flex-direction:column;overflow:visible;max-height:40vh;overflow-y:auto}
+.chips.answers button{white-space:normal;text-align:left;max-width:none;line-height:1.5;padding:9px 12px;border-radius:12px}
+.chips.answers button:disabled{opacity:.45;text-decoration:line-through}
+.chips .chipnote{font-size:12px;color:var(--sub);padding:2px 2px 4px;line-height:1.5}
+.chips button{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:13px;padding:6px 12px;border-radius:99px;cursor:pointer;box-shadow:var(--shadow);max-width:80vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chips button:hover{border-color:var(--accent)}
+.chips button:disabled{opacity:.5;cursor:default}
+.sugtoggle{font-size:12px;color:var(--sub);display:flex;align-items:center;gap:4px;margin-right:10px;cursor:pointer;user-select:none}
+.hintbtn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12px;padding:2px 10px;border-radius:99px;cursor:pointer;margin-right:10px}
+.hintbtn:disabled{opacity:.5;cursor:default}
+.hintcard{align-self:stretch;border-radius:12px;padding:10px 14px;border:1px dashed var(--unsure);background:color-mix(in srgb,var(--unsure) 8%,var(--panel));animation:in .25s ease}
+.hintcard b{color:var(--unsure);margin-right:6px}
+.linkbtn{border:0;background:none;color:var(--sub);text-decoration:underline;font:inherit;font-size:12px;cursor:pointer;padding:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🐢 ウミガメのスープ<small>出題者: Jev</small></h1>
+    <span class="badge" id="mock" hidden>MOCK（APIを使っていません）</span>
+    <span class="shop" id="shop"></span>
+  </header>
+  <div class="closed" id="closed" hidden><b>🏮 本日の営業は終了しました</b><span id="closed-msg"></span></div>
+  <nav class="tabs" id="tabs"></nav>
+
+  <section class="card">
+    <img class="pic" id="pic" alt="" hidden>
+    <p class="story" id="story"></p>
+    <div class="rival" id="rival"></div>
+    <div class="meter" id="meter" hidden>
+      <div class="meter-top"><span>真相への到達度</span><span class="meter-num" id="band">—</span></div>
+      <div class="steps" id="steps"><i></i><i></i><i></i><i></i></div>
+      <div class="meter-note" id="meter-note"></div>
+    </div>
+    <div class="checklist" id="checklist" hidden>
+      <div class="ck-head" id="ck-head"></div>
+      <ul id="ck-list"></ul>
+    </div>
+  </section>
+
+  <p class="hint" id="hint">「はい／いいえ」で答えられる質問をして、真相を突き止めてください。わかったら「解答する」に切り替えます。</p>
+  <div class="log" id="log"></div>
+</div>
+
+<div class="modal" id="modal" hidden><div class="modal-card" id="modal-card"></div></div>
+
+<div class="dock"><div class="in">
+  <div class="mode">
+    <button id="m-ask" class="on" type="button">質問する</button>
+    <button id="m-guess" type="button">解答する</button>
+    <span class="tools">
+      <label class="sugtoggle"><input type="checkbox" id="sugon" checked> <span id="sugname">質問の候補</span></label>
+      <button class="hintbtn" id="hintbtn" type="button">💡 ヒント</button>
+      <button class="linkbtn" id="restart" type="button" hidden>最初から</button>
+      <button class="linkbtn" id="giveup" type="button">ギブアップ</button>
+    </span>
+  </div>
+  <form id="f">
+    <input type="text" id="q" maxlength="120" autocomplete="off" placeholder="例：場所は関係ありますか？">
+    <button id="send">送る</button>
+  </form>
+  <div class="chips" id="chips"></div>
+  <div class="donebar" id="donebar" hidden>
+    <div class="done-msg" id="done-msg"></div>
+    <div class="done-sub" id="done-sub"></div>
+    <button type="button" class="xshare" id="d-share">𝕏 でシェア</button>
+    <div class="done-btns">
+      <button type="button" id="d-result">結果を見る</button>
+      <button type="button" id="d-restart">最初から</button>
+      <button type="button" class="accent" id="d-next">次の問題へ</button>
+    </div>
+  </div>
+  <div class="stats">
+    <span>あなた：いま <b id="s-score">0</b>手（質問 <b id="s-q">0</b>/<span id="s-qmax">20</span>回・解答 <b id="s-g">0</b>/<span id="s-gmax">3</span>回）</span>
+    <span>ヒント <b id="s-h">0</b></span>
+    <span>Jevの応答 <b id="s-ms">–</b></span>
+    <span>このゲームの入力 <b id="s-tok">0</b> トークン</span>
+    <span>費用 <b id="s-yen">0</b> 円</span>
+  </div>
+</div></div>
+
+<script>
+const YEN_PER_USD = 150;
+const $ = id => document.getElementById(id);
+let PUZZLES = [], PRICE = 0.042, cur = null, mode = "ask", busy = false;
+const games = {};   // pid → {history, turns, tokens, keys, solved, truth}
+
+function store(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(games)); }catch{} }
+const STORE_KEY = "umigame-v3";
+function restore(){ try{ Object.assign(games, JSON.parse(localStorage.getItem(STORE_KEY)||"{}")); }catch{} }
+function game(pid){ return games[pid] ??= {history:[], turns:[], tokens:0, calls:0, keys:[], solved:false, truth:null, hints:[]}; }
+// Jev を1回呼んだ分を足す（キャッシュから返ったときは tokens=0 なので数えない）
+function addJev(g, tokens){ if(tokens > 0){ g.tokens += tokens; g.calls = (g.calls || 0) + 1; } }
+
+async function post(url, body){
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 15000);
+  try{
+    const r = await fetch(url, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body), signal:ctl.signal});
+    if(!r.ok){
+      const d = (await r.json().catch(()=>({}))).detail;
+      if(d && d.code === "closed"){ closeShop(d.message); const e = new Error(d.message); e.closed = true; throw e; }
+      // 422 の detail は配列で来る
+      throw new Error(typeof d === "string" ? d : (r.status === 422 ? "入力が長すぎるか、形式が正しくありません" : r.statusText));
+    }
+    return r.json();
+  }catch(e){
+    if(e.name === "AbortError") throw new Error("時間切れです。もう一度送ってください");
+    throw e;
+  }finally{ clearTimeout(timer); }
+}
+const ANSWER_LABELS = ["yes","no","irrelevant","partly","unsure"];
+let shopOpen = true;
+
+function renderShop(used){
+  const el = $("shop");
+  el.className = "shop" + (shopOpen ? "" : " off");
+  el.innerHTML = "<i></i><span></span>";
+  el.querySelector("span").textContent = shopOpen
+    ? `本日営業中` + (used != null ? `（残り ${Math.max(0, Math.round((1-used)*100))}%）` : "")
+    : "本日の営業は終了";
+}
+function closeShop(message){
+  shopOpen = false;
+  $("closed").hidden = false;
+  $("closed-msg").textContent = message || "また明日遊びに来てください";
+  $("send").disabled = true; $("hintbtn").disabled = true; $("q").disabled = true;
+  $("q").placeholder = "本日の営業は終了しました";
+  renderShop(); renderChips();
+}
+
+function renderTabs(){
+  $("tabs").innerHTML = "";
+  PUZZLES.forEach((p,i) => {
+    const b = document.createElement("button");
+    b.className = p.id === cur.id ? "on" : "";
+    b.textContent = `${"★".repeat(p.level||3)} ${p.title}`;
+    if(games[p.id]?.solved){ const d = document.createElement("span"); d.className = "done"; d.textContent = "✓"; b.append(d); }
+    b.onclick = () => openPuzzle(p.id);
+    $("tabs").append(b);
+  });
+}
+
+// 到達度は★3以上だけ。数えた質問3回ごとに4段階で知らせる（AI と同じ見え方）
+const METER_FROM_LEVEL = 3, METER_EVERY = 3;
+const BANDS = ["遠い", "近い", "あと少し", "そろった"];
+const hasMeter = p => (p.level || 3) >= METER_FROM_LEVEL;
+
+// ★1〜2（解答の候補がある問題）は、候補が出る条件を要点の名前のチェックリストで見せる
+function renderChecklist(){
+  const g = game(cur.id), labels = cur.key_labels;
+  $("checklist").hidden = !labels;
+  if(!labels) return;
+  const hit = labels.map((_, i) => g.solved || (g.keys[i] ?? 0) >= 0.5);
+  $("ck-head").textContent = g.choices || g.solved ? "要点（全部そろいました）"
+    : "解答の候補が出る条件：次の要点を質問で突き止める";
+  $("ck-list").innerHTML = "";
+  labels.forEach((lab, i) => {
+    const li = document.createElement("li");
+    li.className = hit[i] ? "hit" : "";
+    li.textContent = `${hit[i] ? "☑" : "☐"} ${lab}`;
+    $("ck-list").append(li);
+  });
+}
+
+function renderMeter(){
+  const g = game(cur.id);
+  renderChecklist();
+  $("meter").hidden = !hasMeter(cur);
+  if(!hasMeter(cur)) return;
+  const band = g.solved ? "そろった" : g.meter;
+  const n = band ? BANDS.indexOf(band) + 1 : 0;
+  $("band").textContent = band || "—";
+  [...$("steps").children].forEach((el, i) => el.classList.toggle("on", i < n));
+  $("steps").classList.toggle("done", n === 4);
+  const left = METER_EVERY - counted(g) % METER_EVERY;
+  $("meter-note").textContent = g.solved ? "" :
+    band === "そろった" ? "要点は全部そろいました。解答してみましょう" :
+    `質問${METER_EVERY}回ごとに更新（次まであと${left}回）`;
+}
+
+// 手数 = 数えた質問（1回＝1手）+ 外した解答（1回＝2手）。少ないほど良い（対戦と同じ数え方）
+const COUNTED_LABELS = ["yes","no","irrelevant","partly"];
+// 数える質問 = 答えが「はい／いいえ／関係なし／一部」の質問 + 数えない入力の上限を超えたあとの入力（forced）
+const counted = g => g.history.filter(h => COUNTED_LABELS.includes(h.a)).length + g.turns.filter(t => t.forced).length;
+const uncountedOf = g => g.turns.filter(t => t.kind === "q" && t.label && !t.error && !t.forced && !COUNTED_LABELS.includes(t.label)).length;
+const wrongs = g => g.turns.filter(t => t.kind === "g" && t.level && t.level !== "correct").length;
+const scoreOf = g => counted(g) + 2 * wrongs(g);
+// 回数の上限（サーバーの /api/puzzles から AI 対戦と同じ値で上書きする）
+let MAX_QUESTIONS = 20, MAX_UNCOUNTED = 10, MAX_GUESSES = 3;
+const isOver = g => g.solved || !!g.truth || wrongs(g) >= MAX_GUESSES;
+
+const PATH = {yes:"🟩", no:"⬛", irrelevant:"⬜", partly:"🟨"};
+const SHARE_TAG = "#ウミガメ人間vsAI";
+
+// AI ごとの勝ち負け。solved=false（解けなかった）のときは、AI も解けなかったら引き分け
+function aiRows(score, solved){
+  return (cur.ai || []).filter(a => !a.sample).map(a => {
+    let res;
+    if(!solved) res = a.score == null ? "draw" : "lose";
+    else res = a.score == null || score < a.score ? "win" : score === a.score ? "draw" : "lose";
+    return {...a, res};
+  });
+}
+const RES_TEXT = {win:"勝ち", draw:"引き分け", lose:"負け"};
+
+function jevStats(g){
+  const asks = g.turns.filter(t => t.kind === "q" && t.ms > 0);
+  const avg = asks.length ? Math.round(asks.reduce((a, t) => a + t.ms, 0) / asks.length) : 0;
+  const yen = g.tokens * PRICE / 1e6 * YEN_PER_USD;
+  // 判定回数を数え始める前の記録では、Jev の答えが付いた手の数で代わりにする
+  const calls = g.calls || g.turns.filter(t => (t.tokens || 0) > 0).length;
+  return {calls, tokens: g.tokens, yen, avg};
+}
+const fmtYen = y => y < 0.01 ? y.toFixed(3) : y.toFixed(2);
+
+function storyHead(p){ const t = p.story; return t.length > 26 ? t.slice(0, 26) + "…" : t; }
+
+function shareText(pid, g){
+  const p = PUZZLES.find(x => x.id === pid);
+  const score = scoreOf(g), rows = aiRows(score, g.solved);
+  const wins = rows.filter(r => r.res === "win");
+  const st = jevStats(g);
+  const hint = ((g.hints || []).length ? "・💡ヒントあり" : "") + (g.retry ? "・解き直し" : "");
+  const path = g.history.map(h => PATH[h.a] || "").join("");
+  const url = `${location.origin}/?p=${pid}`;
+  let head;
+  if(!g.solved){
+    const ai = rows.find(r => r.score != null);
+    head = `🐢 解けなかった…` + (ai ? `（${ai.model}は${ai.score}手）` : "");
+  }else if(rows.length === 1){
+    const r0 = rows[0];
+    head = `🐢 ${r0.model}に${RES_TEXT[r0.res]}（${score}手 vs ${r0.score == null ? "解けず" : r0.score + "手"}）`;
+  }else if(rows.length){
+    const best = rows.find(r => r.score != null);
+    head = wins.length === rows.length ? `🐢 AI ${rows.length}体に全勝！（${score}手）`
+         : wins.length ? `🐢 AI ${rows.length}体中 ${wins.length}体に勝った！（${score}手）`
+         : `🐢 AI ${rows.length}体に勝てず…（${score}手）`;
+    if(best && wins.length < rows.length) head += `\n最少は${best.model}の${best.score}手`;
+  }else{
+    head = `🐢 ${score}手で解けた！`;
+  }
+  return [
+    head,
+    `お題${"★".repeat(p.level || 3)}「${storyHead(p)}」`,
+    `${path}${hint}`,
+    `出題AI Jev：判定${st.calls}回・${st.tokens.toLocaleString()}トークン・${fmtYen(st.yen)}円・平均${st.avg}ms`,
+    `${SHARE_TAG}`,
+    url,
+  ].join("\n");
+}
+
+function shareX(pid){
+  // via を付けると、作者（@weed_tatsuya）にも届く
+  window.open("https://x.com/intent/post?via=weed_tatsuya&text=" + encodeURIComponent(shareText(pid, game(pid))), "_blank", "noopener");
+}
+
+function showResult(pid){
+  const g = game(pid), p = PUZZLES.find(x => x.id === pid);
+  if(!p) return;
+  const score = scoreOf(g), rows = aiRows(score, g.solved);
+  const wins = rows.filter(r => r.res === "win").length;
+  const st = jevStats(g);
+  const card = $("modal-card");
+  card.innerHTML = `<button class="close" aria-label="閉じる">×</button>
+    <div class="odai"></div>
+    <div class="sub"></div><div class="big"></div>
+    <div class="ai"></div>
+    <div class="path"></div>
+    <div class="btns">
+      <button class="primary" data-act="x">𝕏 でシェア</button>
+      <button data-act="copy">結果をコピー</button>
+      <button class="accent" data-act="next">次の問題へ</button>
+    </div>
+    <div class="jevbox"><div class="jevhead">出題AI Jev の中身</div><div class="jevsum"></div>
+      <details><summary>質問ごとの判定を見る</summary><div class="qlist"></div></details></div>
+    <details class="truthbox"><summary>真相を見る</summary><span></span></details>`;
+  card.querySelector(".odai").textContent = `お題 ${"★".repeat(p.level || 3)}　${p.story}`;
+  const hint = (g.hints || []).length ? `・ヒント ${(g.hints || []).length}回` : "";
+  card.querySelector(".sub").textContent = (g.solved
+    ? `解決！ ${score}手（質問 ${counted(g)}回・外れ ${wrongs(g)}回${hint}）` : `解けませんでした（質問 ${counted(g)}回・外れ ${wrongs(g)}回）`)
+    + (g.retry ? "　※解き直し（参考記録）" : "");
+  const big = card.querySelector(".big");
+  if(!rows.length){ big.textContent = g.solved ? "解決！" : "おしい…"; }
+  else if(g.solved && wins){
+    big.textContent = rows.length === 1 ? `${rows[0].model}に勝ち！` : wins === rows.length ? `AI ${rows.length}体に全勝！` : `AI ${rows.length}体中 ${wins}体に勝ち`;
+    big.classList.add("win");
+  }
+  else if(g.solved){
+    const best = Math.min(...rows.filter(r => r.score != null).map(r => r.score));
+    const draw = rows.some(r => r.res === "draw");
+    big.textContent = draw ? "引き分け！" : `今回はAIの勝ち ─ あと${score - best + 1}手少なければ勝ち`;
+    big.classList.add(draw ? "win" : "lose");
+  }
+  else{ big.textContent = "今回は AI の勝ち"; big.classList.add("lose"); }
+  const ai = card.querySelector(".ai");
+  rows.forEach(r => {
+    const d = document.createElement("div"); d.className = "airow";
+    d.innerHTML = "<span><span class='aname'></span> <span class='ameta'></span><span class='apath'></span></span><span></span>";
+    d.querySelector(".aname").textContent = `${r.model}（${r.score == null ? "解けず" : r.score + "手"}）`;
+    if(r.path) d.querySelector(".ameta").textContent = `質問${r.questions}・外れ${r.wrong}`;
+    d.querySelector(".apath").textContent = (r.path || []).map(a => PATH[a] || "").join("");
+    d.children[1].textContent = RES_TEXT[r.res]; d.children[1].className = r.res;
+    ai.append(d);
+  });
+  card.querySelector(".path").textContent = "あなた " + g.history.map(h => PATH[h.a] || "").join("");
+  card.querySelector(".jevsum").textContent =
+    `判定 ${st.calls}回・入力 ${st.tokens.toLocaleString()} トークン・${fmtYen(st.yen)} 円・平均 ${st.avg} ms`;
+  const ql = card.querySelector(".qlist");
+  g.turns.filter(t => t.kind === "q" && t.label).forEach(t => {
+    const d = document.createElement("div"); d.className = "qrow";
+    d.innerHTML = "<div class='qq'></div><div class='qa'></div>";
+    d.querySelector(".qq").textContent = `${PATH[t.label] || "・"} ${t.q}`;
+    const pr = t.probabilities || {};
+    d.querySelector(".qa").textContent = t.cached ? `${t.text}（前と同じ答え）`
+      : `${t.text}　はい ${pc(pr.yes)}・いいえ ${pc(pr.no)}・関係なし ${pc(pr.irrelevant)}・${Number(t.ms || 0)}ms`;
+    ql.append(d);
+  });
+  card.querySelector(".truthbox span").textContent = g.truth || "";
+  card.querySelector(".close").onclick = hideResult;
+  card.querySelector('[data-act="x"]').onclick = () => shareX(pid);
+  card.querySelector('[data-act="copy"]').onclick = async e => {
+    try{ await navigator.clipboard.writeText(shareText(pid, g)); e.target.textContent = "コピーしました"; }
+    catch{ e.target.textContent = "コピーできませんでした"; }
+  };
+  card.querySelector('[data-act="next"]').onclick = () => {
+    hideResult();
+    const next = nextPuzzle(pid);
+    if(next) openPuzzle(next.id);
+  };
+  card.querySelector('[data-act="next"]').hidden = !nextPuzzle(pid);
+  $("modal").hidden = false;
+}
+
+function hideResult(){ $("modal").hidden = true; }
+$("modal").addEventListener("click", e => { if(e.target.id === "modal") hideResult(); });
+
+function compareAI(score){
+  const rows = aiRows(score, true);
+  if(!rows.length) return "";
+  const wins = rows.filter(r => r.res === "win").length, draws = rows.filter(r => r.res === "draw").length;
+  if(rows.length === 1){
+    const r = rows[0];
+    return `${r.model}（${r.score == null ? "解けず" : r.score + "手"}）に${RES_TEXT[r.res]}`;
+  }
+  if(!wins && !draws){
+    const best = rows.find(r => r.score != null);
+    return `今回は AI の勝ち（最少は${best.model}の${best.score}手）`;
+  }
+  return `AI ${rows.length}体中 ${wins}体に勝ち` + (draws ? `・${draws}体と引き分け` : "");
+}
+
+// AIの解答手数：AI を列にして横に並べる（多くなっても横スクロールで見られる）。左端の項目名と「あなた」は固定
+function renderRival(){
+  const ai = cur.ai || [];
+  $("rival").innerHTML = "";
+  if(!ai.length){ $("rival").textContent = "AIの解答手数は準備中です"; return; }
+  // サブの情報なので、ふだんは1行にたたんでおく（開いたかどうかはこの端末だけで覚える）
+  const box = document.createElement("details");
+  try { box.open = localStorage.getItem("umigame-rival-open") === "1"; } catch(e){}
+  box.addEventListener("toggle", () => { try { localStorage.setItem("umigame-rival-open", box.open ? "1" : "0"); } catch(e){} });
+  const sum = document.createElement("summary");
+  const best = ai.find(a => a.score != null && !a.sample);  // 仮の数字は「最少」に使わない
+  sum.append("AIの解答手数");
+  if(!best) sum.append("（測定中）");
+  if(best){ sum.append("：最少は "); const b = document.createElement("b"); b.textContent = `${best.model} ${best.score}手`; sum.append(b); }
+  box.append(sum);
+  const head = document.createElement("div");
+  const samples = ai.filter(a => a.sample).length;
+  head.textContent = `少ない順・各${ai[0].runs}回の中央値` + (samples ? `　※「仮」は、まだ測っていない AI の見本の数字です` : "");
+  const wrap = document.createElement("div");
+  wrap.className = "rival-scroll";
+  const t = document.createElement("table");
+  t.className = "ai-grid";
+  const cell = (tr, tag, text, cls) => { const c = document.createElement(tag); c.textContent = text; if(cls) c.className = cls; tr.append(c); return c; };
+  const h = t.createTHead().insertRow();
+  cell(h, "th", "", "lab");
+  cell(h, "th", "あなた", "you");
+  ai.forEach(a => {
+    const th = cell(h, "th", a.model, a.sample ? "sample" : "");
+    if(a.sample){ const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "仮"; th.append(tag); }
+  });
+  const body = t.createTBody();
+  const g = game(cur.id);
+  // 1行だけ：手数（中央値）と、その下に小さく各回の手数
+  const tr = body.insertRow();
+  cell(tr, "td", "手数", "lab");
+  const y = cell(tr, "td", g.solved ? `${scoreOf(g)}手` : `いま${scoreOf(g)}手`, "you med");
+  y.id = "you-score";
+  ai.forEach(a => {
+    const c = cell(tr, "td", a.score == null ? "解けず" : `${a.score}手`, "med" + (a.sample ? " sample" : ""));
+    const runs = document.createElement("span");
+    runs.className = "runs";
+    runs.textContent = (a.scores || []).map(x => x == null ? "×" : x).join("・");
+    c.append(runs);
+  });
+  wrap.append(t);
+  box.append(head, wrap);
+  $("rival").append(box);
+  // 「あなた」の列も、項目名の列のすぐ右に固定する（横にスクロールしても比べられるように）
+  // たたんでいる間は幅が0なので、開いたときにも測り直す
+  const stick = () => { const labW = t.querySelector(".lab").offsetWidth; t.querySelectorAll(".you").forEach(c => { c.style.left = labW + "px"; }); };
+  stick();
+  box.addEventListener("toggle", stick);
+  const note = document.createElement("div");
+  note.className = "rival-note";
+  note.textContent = "質問1回＝1手、外れた解答＝2手。小さい数字は各回の手数（×は解けなかった回）";
+  box.append(note);
+}
+
+function renderStats(){
+  const g = game(cur.id);
+  $("s-score").textContent = scoreOf(g);
+  if($("you-score")) $("you-score").textContent = g.solved ? `${scoreOf(g)}手` : `いま${scoreOf(g)}手`;
+  $("s-g").textContent = g.turns.filter(t => t.kind === "g" && t.level).length;
+  $("s-gmax").textContent = MAX_GUESSES;
+  $("s-q").textContent = counted(g);
+  $("s-qmax").textContent = MAX_QUESTIONS;
+  $("s-h").textContent = (g.hints||[]).length;
+  $("s-tok").textContent = g.tokens.toLocaleString();
+  $("s-yen").textContent = (g.tokens * PRICE / 1e6 * YEN_PER_USD).toFixed(3);
+  $("restart").hidden = !g.turns.length;
+  renderDock(g);
+  // 終わったゲーム・質問を使い切ったゲームは、入力欄にそう書いておく
+  if(shopOpen) $("q").placeholder = isOver(g) ? "このゲームは終わりました。「最初から」で解き直せます"
+    : mode === "ask" && counted(g) >= MAX_QUESTIONS ? `質問は${MAX_QUESTIONS}回までです。解答してください`
+    : mode === "ask" ? "例：場所は関係ありますか？" : "真相を文章で書いてください";
+}
+
+// 終わったゲーム（解けた・ギブアップ・解答を使い切った）は、入力欄の代わりに「終わりの表示」を出す
+function nextPuzzle(pid){ return PUZZLES.find(x => !games[x.id]?.solved && !games[x.id]?.truth && x.id !== pid); }
+function renderDock(g){
+  const over = isOver(g);
+  document.querySelector(".mode").hidden = over;
+  $("f").hidden = over;
+  $("chips").hidden = over;
+  $("donebar").hidden = !over;
+  if(over){
+    const score = scoreOf(g);
+    $("done-msg").textContent = g.solved ? `🎉 解決！ ${score}手` : "このゲームは終わりました（真相は上に出ています）";
+    $("done-sub").textContent = g.solved ? (compareAI(score) || "") + (g.retry ? "　※解き直し（参考記録）" : "")
+      : "「最初から」でもう一度挑戦できます（記録は参考記録になります）";
+    $("d-next").hidden = !nextPuzzle(cur.id);
+  }
+  requestAnimationFrame(fitDock);
+}
+
+function answerEl(t){
+  const el = document.createElement("div");
+  el.className = "qa";
+  if(t.kind === "c"){
+    const g = game(cur.id);
+    el.innerHTML = `<div class="choices"><h3>💡 要点がそろいました。解答の候補から選べます</h3>
+      <div class="meta">5つの中から1つ。選ぶと解答1回ぶん（外れは +2）。自分で書いて答えてもかまいません</div></div>`;
+    const box = el.querySelector(".choices");
+    (g.choices || []).forEach(c => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = c.text;
+      b.disabled = g.solved || (g.tried || []).includes(c.id) || wrongs(g) >= MAX_GUESSES;
+      b.onclick = () => chooseAnswer(c);
+      box.append(b);
+    });
+    return el;
+  }
+  if(t.kind === "h"){
+    el.innerHTML = `<div class="hintcard"><b></b><span></span></div>`;
+    el.querySelector("b").textContent = t.strong ? "💡 強いヒント" : "💡 ヒント";
+    el.querySelector("span").textContent = t.text || "考え中…";
+    return el;
+  }
+  if(t.kind === "q"){
+    const p = t.probabilities || {};
+    const isAnswer = ANSWER_LABELS.includes(t.label);
+    const cls = t.error ? "error" : !t.label ? "pending" : isAnswer ? t.label : "notq";
+    el.innerHTML = `<div class="q"></div>
+      <div class="a ${cls}"><div class="t"></div>
+      ${isAnswer && !t.error ? `<div class="probs"><span class="py" style="width:${pw(p.yes)}%"></span><span class="pn" style="width:${pw(p.no)}%"></span><span class="pi" style="width:${pw(p.irrelevant)}%"></span></div>
+      <div class="meta"><span>はい ${pc(p.yes)}</span><span>いいえ ${pc(p.no)}</span><span>関係なし ${pc(p.irrelevant)}</span><span>${t.cached ? "📌 前と同じ答え" : "⚡ " + Number(t.ms||0) + "ms"}</span></div>` : ""}</div>`;
+    el.querySelector(".q").textContent = t.q;
+    el.querySelector(".t").textContent = t.text || "考え中…";
+  } else {
+    const titles = {correct:"🎉 正解！", close:"惜しい！", wrong:"違います", scattershot:"候補を並べるのはナシです", pending:"判定中…", error:"判定できませんでした"};
+    const level = t.error ? "error" : (t.level in titles ? t.level : "pending");
+    const note = level === "close"
+      ? (t.marks ? t.marks.map(m => (m.hit ? "✓ " : "✗ ") + m.label).join("　") +
+          "\n→ あとは「" + t.marks.filter(m => !m.hit).map(m => m.label).join("」「") + "」も説明してください"
+        : `要点 ${Number(t.hits)}/${Number(t.total)} をおさえています`)
+      : level === "scattershot" ? "答えは1つに絞ってください"
+      : level === "error" ? String(t.error) : "";
+    el.innerHTML = `<div class="q"></div><div class="verdict ${level}"><h3>${titles[level]}</h3>
+      ${note ? `<div class="meta"></div>` : ""}
+      ${t.truth ? `<div class="truth"><b>真相：</b><span></span></div>` : ""}</div>`;
+    if(note) el.querySelector(".verdict .meta").textContent = note;
+    if(t.vs){
+      const v = document.createElement("div"); v.className = "vs";
+      v.textContent = `${t.score}手 ─ ${t.vs}`;
+      el.querySelector(".verdict h3").after(v);
+      const b = document.createElement("button"); b.type = "button"; b.className = "hintbtn"; b.style.marginTop = "8px";
+      b.textContent = "結果とシェア"; b.onclick = () => showResult(cur.id);
+      el.querySelector(".verdict").append(b);
+    }
+    el.querySelector(".q").textContent = "解答：" + t.q;
+    if(t.truth) el.querySelector(".truth span").textContent = t.truth;
+  }
+  return el;
+}
+const pw = v => Math.max(0, Math.min(100, Number(v)*100 || 0));
+const pc = v => Math.round(pw(v)) + "%";
+
+function renderLog(){
+  const g = game(cur.id);
+  $("log").innerHTML = "";
+  g.turns.forEach(t => $("log").append(answerEl(t)));
+  if(g.truth && !g.turns.some(t=>t.truth)){
+    const el = document.createElement("div");
+    el.className = "verdict"; el.innerHTML = `<h3>真相</h3><div class="truth"></div>`;
+    el.querySelector(".truth").textContent = g.truth;
+    $("log").append(el);
+  }
+  $("hint").hidden = g.turns.length > 0;
+}
+
+// 名前を open にすると window.open（X のシェアで使う）を上書きしてしまうので openPuzzle にする
+function openPuzzle(pid){
+  cur = PUZZLES.find(p => p.id === pid);
+  $("story").textContent = cur.story;
+  // 問題ごとの画像（あれば）。無ければ隠す
+  const pic = $("pic");
+  pic.hidden = true;
+  pic.onload = () => { pic.hidden = false; };
+  pic.onerror = () => { pic.hidden = true; };
+  pic.src = `/static/img/${cur.id}.png`;  // 4色のドット絵（tools/palette.py で変換したもの）
+  renderTabs(); renderRival(); renderMeter(); renderStats(); renderLog(); renderChips();
+  // 到達度を測る前に保存された途中のゲームは、開いたときに一度だけ測る
+  const g = game(pid);
+  if(hasMeter(cur) && !g.meter && !g.solved && counted(g) >= METER_EVERY && shopOpen) refreshProgress(pid);
+  try{ localStorage.setItem("umigame-cur", pid); }catch{}
+}
+
+const SUGGEST_SHOWN = 3;
+const norm = t => t.replace(/[\s？?!！。、,.「」『』]/g, "");
+// 候補のオン・オフは、質問の候補と解答の候補で別々に覚える
+const SUGGEST_KEYS = {ask:"umigame-suggest", guess:"umigame-suggest-answers"};
+function suggestOn(m = mode){ try{ return localStorage.getItem(SUGGEST_KEYS[m]) !== "0"; }catch{ return true; } }
+
+// 解答モードのとき、要点がそろっていれば解答の候補を出す（そろっていなければ何も出さない）
+function renderAnswerChoices(box){
+  const g = game(cur.id);
+  box.classList.add("answers");
+  if(!suggestOn("guess") || !shopOpen || g.solved || wrongs(g) >= MAX_GUESSES) return;
+  if(!g.choices){
+    // 候補が出ない理由を書いておく（黙って空だと、壊れているように見える）
+    const note = document.createElement("div");
+    note.className = "chipnote";
+    note.textContent = (cur.level || 3) > 2
+      ? "★3以上の問題では、解答の候補は出ません。真相を文章で書いてください"
+      : cur.key_labels ? "上の要点が全部 ☑ になると、ここに解答の候補が5つ出ます"
+      : "この問題には解答の候補はありません。真相を文章で書いてください";
+    box.append(note);
+    return;
+  }
+  g.choices.forEach(c => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = c.text;
+    b.disabled = busy || (g.tried || []).includes(c.id);
+    b.onclick = () => chooseAnswer(c);
+    box.append(b);
+  });
+}
+
+// 下に固定した入力欄の高さに合わせて、記録の下の余白を広げる（候補が増えても最後の答えが隠れないように）
+function fitDock(){
+  const d = document.querySelector(".dock"), w = document.querySelector(".wrap");
+  if(d && w) w.style.paddingBottom = (d.offsetHeight + 24) + "px";
+}
+window.addEventListener("resize", fitDock);
+
+function renderChips(){
+  requestAnimationFrame(fitDock);
+  const box = $("chips");
+  box.innerHTML = ""; box.classList.remove("answers");
+  $("sugon").checked = suggestOn();
+  $("sugname").textContent = mode === "guess" ? "解答の候補" : "質問の候補";
+  if(mode === "guess"){ renderAnswerChoices(box); return; }
+  if(!suggestOn() || !shopOpen || !cur) return;
+  const g = game(cur.id);
+  const asked = new Set(g.turns.filter(t => t.kind === "q").map(t => norm(t.q)));
+  const left = (cur.suggest || []).filter(q => !asked.has(norm(q)));
+  if(!left.length && !g.solved){
+    const note = document.createElement("div");
+    note.className = "chipnote";
+    note.textContent = "質問の候補は全部使いました。ここからは自分の言葉で聞いてみましょう";
+    box.append(note);
+    return;
+  }
+  left.slice(0, SUGGEST_SHOWN).forEach(q => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = q; b.disabled = busy;
+    // 押したらそのまま質問として送る
+    b.onclick = () => { if(busy) return; $("q").value = q; $("f").requestSubmit(); };
+    box.append(b);
+  });
+}
+
+function setMode(m){
+  mode = m;
+  $("m-ask").classList.toggle("on", m==="ask");
+  $("m-guess").classList.toggle("on", m==="guess");
+  renderChips();
+  if(!shopOpen) return;
+  if(cur) renderStats();
+  $("q").maxLength = m==="ask" ? 120 : 300;
+  $("q").focus();
+}
+
+async function chooseAnswer(c){
+  const pid = cur.id, g = game(pid);
+  if(busy || isOver(g)) return;
+  busy = true;
+  const turn = {kind:"g", q:c.text};
+  g.turns.push(turn); renderLog(); scrollDown();
+  try{
+    const r = await post("/api/choose", {pid, id:c.id});
+    turn.level = r.level;
+    (g.tried ??= []).push(c.id);
+    if(r.level === "correct"){ g.solved = true; g.truth = r.truth; turn.vs = compareAI(scoreOf(g)); turn.score = scoreOf(g); turn.truth = r.truth; }
+  }catch(e){ turn.error = e.message; }
+  store(); busy = false;
+  if(cur.id === pid){ renderLog(); renderStats(); renderTabs(); renderChips(); scrollDown(); }
+  await afterGuess(pid);
+}
+
+// 解けた、または解答を3回外したら結果を出す（3回外したら真相も見せる）
+async function afterGuess(pid){
+  const g = game(pid);
+  if(g.solved){ showResult(pid); return; }
+  if(wrongs(g) >= MAX_GUESSES && !g.truth){
+    try{ const r = await post("/api/reveal", {pid}); g.truth = r.truth; store(); if(cur.id === pid) renderLog(); }catch{}
+    showResult(pid);
+  }
+}
+
+// ★1〜2で要点が全部そろったら、解答の候補を出す
+async function maybeUnlockChoices(pid){
+  const g = game(pid), p = PUZZLES.find(x => x.id === pid);
+  if(!p || (p.level || 3) > 2 || g.solved || g.choices) return;
+  if(!g.keys.length || !g.keys.every(v => v >= 0.5)) return;
+  try{
+    const r = await post("/api/choices", {pid});
+    if(!r.choices.length) return;
+    g.choices = r.choices; store();
+    if(cur.id === pid){ renderChips(); renderChecklist(); }
+  }catch(e){ console.warn(e); }
+}
+
+async function refreshProgress(pid){
+  const g = game(pid);
+  try{
+    const r = await post("/api/progress", {pid, history:g.history});
+    g.keys = r.keys; addJev(g, r.tokens);
+    const p = PUZZLES.find(x => x.id === pid);
+    if(p && hasMeter(p)) g.meter = r.band;
+    store();
+    if(cur.id === pid){ renderMeter(); renderStats(); }
+    maybeUnlockChoices(pid);
+  }catch(e){ console.warn(e); }
+}
+
+$("f").onsubmit = async ev => {
+  ev.preventDefault();
+  const text = $("q").value.trim();
+  if(!text || busy) return;
+  const pid = cur.id, g = game(pid);
+  if(isOver(g)){
+    alert(g.solved ? "もう解けています。「最初から」で解き直せます" : g.truth ? "このゲームは終わっています。「最初から」で解き直せます"
+      : `解答は${MAX_GUESSES}回までです。ギブアップで真相を見られます`);
+    return;
+  }
+  if(mode === "ask" && counted(g) >= MAX_QUESTIONS){
+    alert(`質問は${MAX_QUESTIONS}回までです。解答してください`);
+    setMode("guess");
+    return;
+  }
+  busy = true; $("send").disabled = true; $("q").value = "";
+  const turn = mode === "ask" ? {kind:"q", q:text} : {kind:"g", q:text};
+  g.turns.push(turn); renderLog(); renderChips(); scrollDown();
+  try{
+    if(turn.kind === "q"){
+      const r = await post("/api/ask", {pid, question:text, history:g.history.slice(-100)});
+      // 数えない入力（どちらとも言えない・質問になっていない）も、上限を超えたら1手として数える
+      const over = !COUNTED_LABELS.includes(r.label) && uncountedOf(g) >= MAX_UNCOUNTED;
+      Object.assign(turn, r); addJev(g, r.tokens);
+      if(over) turn.forced = true;
+      if(ANSWER_LABELS.includes(r.label)){
+        // 質問として答えたものだけを履歴に残す（ヒント要求などは数えない）
+        g.history.push({q:text, a:r.label});
+        // ★1〜2は解答の候補を出すかを決めるため毎回、★3以上は数えた質問3回ごとに（答えを見せた後で）測る
+        const p = PUZZLES.find(x => x.id === pid);
+        if(!hasMeter(p) || (r.label !== "unsure" && counted(g) % METER_EVERY === 0)) refreshProgress(pid);
+      }
+      if(!r.cached) $("s-ms").textContent = r.ms + "ms";
+    } else {
+      const r = await post("/api/guess", {pid, guess:text});
+      Object.assign(turn, r); addJev(g, r.tokens);
+      if(r.level === "correct"){ g.solved = true; g.truth = r.truth; turn.vs = compareAI(scoreOf(g)); turn.score = scoreOf(g); }
+    }
+  }catch(e){
+    Object.assign(turn, turn.kind==="q" ? {label:"unsure", error:e.message, text:e.message} : {error:e.message});
+  }
+  store();
+  busy = false;
+  if(cur.id === pid){ renderLog(); renderMeter(); renderStats(); renderTabs(); scrollDown(); }
+  renderChips();
+  if(turn.kind === "g") await afterGuess(pid);
+  $("send").disabled = !shopOpen; if(shopOpen) $("q").focus();
+};
+
+$("hintbtn").onclick = async () => {
+  if(busy) return;
+  const pid = cur.id, g = game(pid);
+  g.hints ??= [];
+  busy = true; $("hintbtn").disabled = true;
+  const turn = {kind:"h"};
+  g.turns.push(turn); renderLog(); scrollDown();
+  try{
+    const r = await post("/api/hint", {pid, history:g.history.slice(-100), used:g.hints});
+    Object.assign(turn, {text:r.text, strong:r.strong});
+    if(r.hint) g.hints.push(r.hint);
+    g.keys = r.keys; addJev(g, r.tokens);
+  }catch(e){ turn.text = e.message; }
+  store();
+  if(cur.id === pid){ renderLog(); renderMeter(); renderStats(); scrollDown(); }
+  busy = false; $("hintbtn").disabled = !shopOpen;
+};
+
+// 確認ダイアログ（confirm）は埋め込みのブラウザで出ないことがあるので、2回押しで確認する
+let giveupArmed = null;
+$("giveup").onclick = async () => {
+  const btn = $("giveup");
+  if(!giveupArmed){
+    btn.textContent = "もう一度押すと真相を表示";
+    giveupArmed = setTimeout(() => { giveupArmed = null; btn.textContent = "ギブアップ"; }, 4000);
+    return;
+  }
+  clearTimeout(giveupArmed); giveupArmed = null; btn.textContent = "ギブアップ";
+  const g = game(cur.id);
+  try{
+    const r = await post("/api/reveal", {pid:cur.id});
+    g.truth = r.truth; store(); renderLog(); scrollDown();
+    showResult(cur.id);
+  }catch(e){ alert(e.message); }
+};
+// この問題の記録だけを消して最初から。答えを知ったあとの解き直しは参考記録にする
+// 2回押しで確定するボタン（confirm は埋め込みのブラウザで出ないことがあるため）
+function twoTap(btn, armedText, action){
+  const idle = btn.textContent;
+  let armed = null;
+  btn.onclick = () => {
+    if(busy) return;
+    if(!armed){
+      btn.textContent = armedText;
+      armed = setTimeout(() => { armed = null; btn.textContent = idle; }, 4000);
+      return;
+    }
+    clearTimeout(armed); armed = null; btn.textContent = idle;
+    action();
+  };
+}
+twoTap($("restart"), "もう一度押すと記録を消す", restartPuzzle);
+twoTap($("d-restart"), "もう一度押すと記録を消す", restartPuzzle);
+$("d-result").onclick = () => showResult(cur.id);
+$("d-share").onclick = () => shareX(cur.id);
+$("d-next").onclick = () => { const n = nextPuzzle(cur.id); if(n) openPuzzle(n.id); };
+function restartPuzzle(){
+  const old = game(cur.id);
+  const knew = old.retry || old.solved || !!old.truth;
+  delete games[cur.id];
+  if(knew) game(cur.id).retry = true;
+  store(); hideResult(); setMode("ask"); openPuzzle(cur.id);
+}
+$("sugon").onchange = e => { try{ localStorage.setItem(SUGGEST_KEYS[mode], e.target.checked ? "1" : "0"); }catch{} renderChips(); };
+$("m-ask").onclick = () => setMode("ask");
+$("m-guess").onclick = () => setMode("guess");
+function scrollDown(){ window.scrollTo({top:document.body.scrollHeight, behavior:"smooth"}); }
+
+(async () => {
+  restore();
+  const r = await (await fetch("/api/puzzles")).json();
+  PUZZLES = r.puzzles; PRICE = r.price_per_1m; $("mock").hidden = !r.mock;
+  if(r.rules){ MAX_QUESTIONS = r.rules.max_questions; MAX_UNCOUNTED = r.rules.max_uncounted; MAX_GUESSES = r.rules.max_guesses; }
+  if(r.shop && !r.shop.open) closeShop(r.shop.message); else renderShop(r.shop?.used);
+  let last = null; try{ last = localStorage.getItem("umigame-cur"); }catch{}
+  const fromUrl = new URLSearchParams(location.search).get("p");
+  const start = [fromUrl, last].find(id => PUZZLES.some(p => p.id === id));
+  openPuzzle(start || PUZZLES[0].id);
+})();
+</script>
+</body>
+</html>

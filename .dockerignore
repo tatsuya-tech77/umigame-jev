@@ -1,0 +1,13 @@
+# キー・手元の状態・答えが書いてあるファイルはイメージに入れない
+.env
+.env.*
+.budget.json
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+docs/
+tests/
+tools/
+results/*
+!results/arena-claude-code.jsonl

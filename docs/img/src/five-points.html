@@ -25,7 +25,7 @@
     width: 56px; height: 56px; border-radius: 12px; background: var(--accent); color: #fff;
     display: grid; place-items: center; font-size: 32px; font-weight: 800;
   }
-  .what { font-size: 28px; font-weight: 800; line-height: 1.35; }
+  .what { font-size: 25px; font-weight: 800; line-height: 1.35; }
   .stat {
     background: var(--accent-soft); border-radius: 12px; padding: 12px 10px; text-align: center;
     color: var(--sub); font-size: 17px; font-weight: 600; line-height: 1.4;
@@ -36,32 +36,32 @@
 <body>
   <div class="row">
     <div class="no">1</div>
-    <div class="what">聞きたいことは<br>1回にまとめる</div>
-    <div class="stat"><strong>質問を増やしても<br>遅くならない</strong>1つでも4つでも約0.19秒</div>
+    <div class="what">判定したい項目は<br>1リクエストにまとめる</div>
+    <div class="stat"><strong>質問を増やすほど<br>効率的</strong>1問でも4問でも約0.19秒</div>
   </div>
 
   <div class="row">
     <div class="no">2</div>
-    <div class="what">「はい」は<br>別の聞き方でも確認</div>
-    <div class="stat"><strong>高い確率の「はい」も<br>半分は間違い</strong>確率0.7〜0.9の「はい」で<br>正しかったのは11問中6問</div>
+    <div class="what">「はい」は別の観点で<br>クロスチェック</div>
+    <div class="stat"><strong>確率が高くても<br>誤判定する</strong>難しい問題では、0.7〜0.9の<br>「はい」の約半分が誤り</div>
   </div>
 
   <div class="row">
     <div class="no">3</div>
-    <div class="what">指示の強制は<br>別に判定する</div>
-    <div class="stat"><strong>指示ひとつで<br>答えが変わる</strong>プロンプトインジェクションで<br>「はい」が約0.3→約0.7</div>
+    <div class="what">指示の混入は<br>別の判定で検知</div>
+    <div class="stat"><strong>プロンプト<br>インジェクション</strong>指示ひとつで<br>「いいえ」→「はい」</div>
   </div>
 
   <div class="row">
     <div class="no">4</div>
     <div class="what">前のやりとりは<br>判定に使わない</div>
-    <div class="stat"><strong>前の「はい」に<br>つられる</strong>★4の問題で、4問中2問が<br>つられた「はい」</div>
+    <div class="stat"><strong>前の「はい」に<br>つられる</strong>特に難しい問題で起きる</div>
   </div>
 
   <div class="row">
     <div class="no">5</div>
-    <div class="what">真相にないことは<br>事実として足す</div>
-    <div class="stat"><strong>書いていないことは<br>常識で補わない</strong>「一人暮らし？」<br>→「関係ありません」</div>
+    <div class="what">暗黙の前提も<br>コンテキストに明記</div>
+    <div class="stat"><strong>書いていないことは<br>推測しない</strong>真相にないことを聞くと<br>「関係ありません」</div>
   </div>
 </body>
 </html>

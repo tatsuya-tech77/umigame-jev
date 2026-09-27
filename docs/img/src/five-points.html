@@ -1,5 +1,6 @@
 <!doctype html>
-<!-- Qiita 記事「作ってわかった5つのこと」の図。撮り方は docs/qiita-draft.md の先頭のコメント -->
+<!-- Qiita 記事「作ってわかった5つのこと」の図。撮り方は docs/qiita-draft.md の先頭のコメント。
+     スマホ幅（約360px）に縮んでも読めるように、幅720px・番号と見出しと数字だけにしている -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -7,79 +8,64 @@
 <style>
   :root {
     --bg: #f6f4ef; --panel: #fffdf8; --ink: #1d1b16; --sub: #6b6558; --line: #e3ddd0;
-    --accent: #0f766e; --accent-soft: #d6efec; --no: #dc2626; --yes: #16a34a;
+    --accent: #0f766e; --accent-soft: #d6efec; --no: #dc2626;
   }
   * { box-sizing: border-box; margin: 0; }
   body {
-    width: 1000px; padding: 36px 40px 32px; background: var(--bg); color: var(--ink);
+    width: 720px; padding: 24px; background: var(--bg); color: var(--ink);
     font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   }
-  header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
-  h1 { font-size: 34px; font-weight: 800; letter-spacing: .02em; }
-  h1 small { display: block; font-size: 17px; font-weight: 600; color: var(--sub); margin-bottom: 6px; letter-spacing: 0; }
   .row {
-    display: grid; grid-template-columns: 64px 1fr 250px; align-items: center; gap: 22px;
+    display: grid; grid-template-columns: 56px 1fr 236px; align-items: center; gap: 18px;
     background: var(--panel); border: 2px solid var(--line); border-radius: 16px;
-    padding: 18px 22px; margin-bottom: 12px;
+    padding: 16px 18px; margin-bottom: 12px;
   }
+  .row:last-of-type { margin-bottom: 0; }
   .no {
-    width: 64px; height: 64px; border-radius: 14px; background: var(--accent); color: #fff;
-    display: grid; place-items: center; font-size: 34px; font-weight: 800;
+    width: 56px; height: 56px; border-radius: 12px; background: var(--accent); color: #fff;
+    display: grid; place-items: center; font-size: 32px; font-weight: 800;
   }
-  .what b { display: block; font-size: 23px; white-space: nowrap; font-weight: 800; line-height: 1.35; }
-  .what span { display: block; font-size: 16px; color: var(--sub); margin-top: 4px; line-height: 1.5; }
+  .what { font-size: 28px; font-weight: 800; line-height: 1.35; }
   .stat {
-    background: var(--accent-soft); border-radius: 12px; padding: 12px 16px; text-align: center;
-    font-size: 15px; color: var(--sub); line-height: 1.4;
+    background: var(--accent-soft); border-radius: 12px; padding: 10px 8px; text-align: center;
+    font-size: 20px; font-weight: 600; color: var(--sub); line-height: 1.35;
   }
-  .stat strong { display: block; font-size: 28px; white-space: nowrap; font-weight: 800; color: var(--accent); line-height: 1.25; }
+  .stat strong { display: block; font-size: 27px; font-weight: 800; color: var(--accent); line-height: 1.2; white-space: nowrap; }
+  .stat strong.small { font-size: 24px; }
+  .stat .term { font-size: 16px; white-space: nowrap; }
   .stat .bad { color: var(--no); }
-  .stat .arrow { color: var(--sub); font-weight: 600; margin: 0 4px; }
-  .stat .small { font-size: 22px; }
-  .stat .note { display: block; font-size: 13px; }
-  footer { font-size: 14px; color: var(--sub); text-align: right; margin-top: 8px; }
+  .stat .arrow { color: var(--sub); margin: 0 4px; }
 </style>
 </head>
 <body>
-  <header>
-    <h1><small>文章を書かないAI「Jev」でウミガメのスープの出題者を作って</small>作ってわかった5つのこと</h1>
-  </header>
-
   <div class="row">
     <div class="no">1</div>
-    <div class="what"><b>聞きたいことは、1回のリクエストにまとめる</b>
-      <span>確認用の質問を増やしても遅くならない</span></div>
-    <div class="stat">質問が1つでも4つでも<strong>約0.19秒</strong></div>
+    <div class="what">聞きたいことは<br>1回にまとめる</div>
+    <div class="stat">質問が1つでも4つでも<strong>応答時間は同じ</strong>（約0.19秒）</div>
   </div>
 
   <div class="row">
     <div class="no">2</div>
-    <div class="what"><b>「はい」の前に、別の聞き方で確かめる</b>
-      <span>「間違っている部分はある？」「全部正しい？」も一緒に聞く</span></div>
-    <div class="stat">間違った「はい」（86問中）<strong><span class="bad">3問</span><span class="arrow">→</span>0問</strong><span class="note">（のちの調整後は2問）</span></div>
+    <div class="what">「はい」は<br>別の聞き方でも確認</div>
+    <div class="stat">間違った「はい」<strong><span class="bad">3問</span><span class="arrow">→</span>0問</strong>（今は2問）</div>
   </div>
 
   <div class="row">
     <div class="no">3</div>
-    <div class="what"><b>「はいと答えて」の混入は、別に判定する</b>
-      <span>指示が混ざっていたら答えない</span></div>
-    <div class="stat">指示を混ぜた質問<strong>15件すべて防止</strong></div>
+    <div class="what">指示の強制は<br>別に判定する</div>
+    <div class="stat"><span class="term">プロンプトインジェクション</span><strong>15件すべて防止</strong></div>
   </div>
 
   <div class="row">
     <div class="no">4</div>
-    <div class="what"><b>前のやりとりは、正しいかの判定に使わない</b>
-      <span>「それ」が通じるように渡し、食い違いだけやりとりなしで聞き直す</span></div>
-    <div class="stat">前の「はい」につられた答えを<strong>「一部」に直す</strong></div>
+    <div class="what">前のやりとりは<br>判定に使わない</div>
+    <div class="stat">つられた「はい」を<strong>「一部」に直す</strong></div>
   </div>
 
   <div class="row">
     <div class="no">5</div>
-    <div class="what"><b>真相にないことは、事実として1行ずつ足す</b>
-      <span>Jev は書いていないことを常識で補わない</span></div>
-    <div class="stat">「一人暮らしですか？」<strong class="small">関係ありません</strong><span class="note">（真相に書いていないと）</span></div>
+    <div class="what">真相にないことは<br>事実として足す</div>
+    <div class="stat">書いていないと<strong class="small">関係ありません</strong></div>
   </div>
-
-  <footer>数字はすべて、実際に Jev に聞いた結果</footer>
 </body>
 </html>
